@@ -51,6 +51,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     var floorX:CGFloat = 0.0
     var gameStatus:gameStatu = .gameing
     var canrestart:Bool = false
+    var isAheadHinder:Int = -1
+    
     override func didMoveToView(view: SKView) {
         
         physicsWorld.gravity = CGVectorMake(0, 0)
@@ -101,11 +103,20 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             randomUP = randomUP - 30
         }
         
-       
+        isAheadHinder = (isAheadHinder + 1 ) % 3
+        switch isAheadHinder {
+        case 0:
+            preHinderHidden = true
+        case 1:
+            preHinderHidden = true
+            randomUP = 0
+        default:
+            preHinderHidden = false
+        }
+        
         let poistionY = preHinder.position.y + randomUP
         hinder.position = CGPointMake(beginX,poistionY)
         let randomVar = Int.random(min:0,max:1)
-        //print("rand:  \(randomVar)")
         let boolvar = (randomVar == 1) ? true : true
         if boolvar == true && preHinderHidden != true{
             preHinderHidden = true
@@ -236,7 +247,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                     self.contactRight = right
                     self.floorX = hinder.position.y + hinder.size.height/2
                     self.hasContact = false
-                    //print("fuck ")
                 }
                 
             }
